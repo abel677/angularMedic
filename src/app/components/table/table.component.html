@@ -1,0 +1,22 @@
+<div class="tableFixHead">
+  <table class="table table-hover table-striped w-100">
+    <thead>
+      <th>Paciente</th>
+      <th>Doctor</th>
+      <th>Fecha Solicitud</th>
+      <th>Fecha Cita</th>
+      <th>Observaciones</th>
+      <th>Estado</th>
+    </thead>
+    <tbody>
+      <tr *ngFor="let item of data; index as i">
+        <td>{{ item.patient.name }}- {{ item.patient.lastName }}</td>
+        <td>{{ item.doctors[i].name }} - {{ item.doctors[i].lastName }}</td>
+        <td>{{ item.appointment[i].currentDate }}</td>
+        <td>{{ item.appointment[i].appointmentDate }}</td>
+        <td>{{ item.appointment[i].description }}</td>
+        <td>Activa</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

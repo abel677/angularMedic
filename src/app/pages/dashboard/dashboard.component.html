@@ -1,0 +1,39 @@
+<h1 class="text-center">Bienvenido a Medial Center</h1>
+<br />
+<br />
+<hr />
+<div class="row mb-2">
+  <h4>Historial de Citas</h4>
+</div>
+<div class="row d-flex align-items-end border rounded">
+  <div class="tableFixHead">
+    <table class="table table-hover table-striped w-100">
+      <thead>
+        <th>Doctor</th>
+        <th>Fecha Solicitud</th>
+        <th>Fecha Cita</th>
+        <th>Descripción</th>
+        <th>Estado Solicitud</th>
+      </thead>
+      <tbody>
+        <tr *ngFor="let item of appointments; index as i">
+          <td>
+            {{ item.doctor.name }}
+          </td>
+          <td>
+            {{ item.currentDate }}
+          </td>
+          <td>
+            {{ item.appointmentDate }}
+          </td>
+          <td>
+            {{ item.description }}
+          </td>
+          <td>
+            {{ item.state ? "Resuelta" : "Pendiente" }}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,0 +1,115 @@
+<div class="box-flex">
+  <div class="d-flex justify-content-center align-items-center h-100">
+    <div class="col-12 col-md-4 border shadow py-3 px-4">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
+        <div class="row m-0">
+          <i class="bi bi-person-circle fs-1 text-center"></i>
+
+          <div
+            *ngIf="message.length > 0"
+            class="alert alert-danger alert-dismissible fade show"
+            role="alert"
+          >
+            {{ message }}
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="alert"
+              aria-label="Close"
+            ></button>
+          </div>
+        </div>
+
+        <div class="row mb-2">
+          <div class="col-12">
+            <label class="form-label">Email:</label>
+            <input
+              type="text"
+              [ngClass]="
+                emailField?.errors && emailField?.touched
+                  ? 'is-invalid form-control'
+                  : 'form-control'
+              "
+              formControlName="email"
+            />
+            <div
+              *ngIf="emailField?.errors && emailField?.touched"
+              class="text-danger m-1"
+            >
+              <p *ngIf="emailField?.hasError('required')">
+                El email es requerido
+              </p>
+              <p *ngIf="emailField?.hasError('email')">El email no es valido</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-4 position-relative">
+          <div class="col-12">
+            <label class="form-label">Password:</label>
+
+            <div class="input-group mb-3">
+              <input
+                [type]="isShowPassword ? 'text' : 'password'"
+                [ngClass]="
+                  passwordField?.errors && passwordField?.touched
+                    ? 'is-invalid form-control'
+                    : 'form-control'
+                "
+                formControlName="password"
+              />
+              <span class="input-group-text" id="basic-addon2">
+                <ng-template [ngIf]="isShowPassword" [ngIfElse]="eyes">
+                  <i
+                    class="bi bi-eye cursor-pointer"
+                    (click)="setIsShowPassword()"
+                  ></i>
+                </ng-template>
+                <ng-template #eyes>
+                  <i
+                    class="bi bi-eye-slash cursor-pointer"
+                    (click)="setIsShowPassword()"
+                  ></i>
+                </ng-template>
+              </span>
+            </div>
+
+            <div
+              *ngIf="passwordField?.errors && passwordField?.touched"
+              class="text-danger m-1"
+            >
+              <p *ngIf="emailField?.hasError('required')">
+                La contraseña es requerida
+              </p>
+              <p *ngIf="emailField?.hasError('Min')">Mínimo 8 caracteres</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="row mb-2">
+          <div class="col-12 col-md-auto">
+            <ng-template [ngIf]="!loader.IsGetLoader" [ngIfElse]="loaderButton">
+              <button type="submit" class="btn btn-primary w-100 shadow">
+                Iniciar Sesión
+              </button>
+            </ng-template>
+
+            <ng-template #loaderButton>
+              <button
+                class="btn btn-primary w-100 shadow"
+                type="button"
+                disabled
+              >
+                <span role="status">Cargando...</span>
+                <span
+                  class="spinner-grow spinner-grow-sm ms-2"
+                  aria-hidden="true"
+                ></span>
+              </button>
+            </ng-template>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
