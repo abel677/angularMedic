@@ -1,15 +1,14 @@
-<div class="container-lg border rounded box px-4">
-  <div class="row ">
+<div class="container-lg border rounded shadow box px-4">
+  <div class="row">
     <div>
       <my-header (onClick)="logout()" [email]="user.email"></my-header>
       <my-navbar></my-navbar>
     </div>
   </div>
 
-  <div class="row m-0 box-content">
+  <div class="row m-0 box-content px-5">
     <router-outlet></router-outlet>
   </div>
 </div>
-<div *ngIf="loader.IsGetLoader">
-  <app-loader></app-loader>
-</div>
+
+<app-loader></app-loader>

@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoaderService } from 'src/app/services/loader.service';
+import { PersonService } from 'src/app/services/person.service';
 
 @Component({
   selector: 'app-login',
@@ -11,19 +12,17 @@ import { LoaderService } from 'src/app/services/loader.service';
 })
 export class LoginComponent {
   isShowPassword: boolean = false;
-  message: string = '';
-  
-
+  loader: boolean = false;
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    public loader: LoaderService
+    public personService: PersonService
   ) {}
 
   form: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', [Validators.required, Validators.min(8)]],
+    password: ['', [Validators.required, Validators.minLength(8)]],
   });
 
   get emailField() {
@@ -38,24 +37,16 @@ export class LoginComponent {
   }
 
   onSubmit() {
-    this.message = '';
     if (this.form.valid) {
-      this.loader.IsSetLoader = true;
+      this.loader = true;
       this.authService.login(this.form.value).subscribe({
         next: (res) => {
-          this.message = '';
-          this.loader.IsSetLoader = false;
           localStorage.setItem('token', res.jwt);
-          localStorage.setItem('user',JSON.stringify(res.user));
-          localStorage.setItem('person',JSON.stringify(res.person));
+          localStorage.setItem('user', JSON.stringify(res.user));
           this.router.navigate(['/home']);
+          this.loader = false;
         },
-        error: (err) => {
-          this.message = 'Credenciales invalidas';
-          this.loader.IsSetLoader = false;
-          console.log(err);
-          
-        },
+        error: (err) => {},
       });
     } else {
       this.form.markAllAsTouched();

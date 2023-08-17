@@ -8,6 +8,7 @@ import { AppointmentsComponent } from './pages/appointments/appointments.compone
 import { isExpired } from './guard/isExpired';
 import { isLogout } from './guard/isLogout';
 import { isPatient } from './guard/isPatient';
+import { PersonalContactComponent } from './pages/personal-contact/personal-contact.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, canActivate: [isLogout] },
@@ -16,9 +17,11 @@ const routes: Routes = [
 
   {
     path: 'home', component: HomeComponent, canActivate: [isExpired],
+    
     children: [
       { path: '', component: DashboardComponent, canActivate: [isExpired]},
-      { path: 'appointments', component: AppointmentsComponent, canActivate:[ isExpired, isPatient ]}
+      { path: 'appointments', component: AppointmentsComponent, canActivate:[ isExpired, isPatient ]},
+      { path: 'personal/contact', component: PersonalContactComponent, canActivate:[ isExpired ]},
       
     ]
   },

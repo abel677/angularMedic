@@ -3,6 +3,10 @@ export interface IAuth {
   password: string;
 }
 
+export interface IRegisterPayload extends IAuth {
+  name: string;
+}
+
 export interface IUser {
   id?: number;
   name: string;
@@ -25,6 +29,10 @@ export interface IPerson extends IGender, IUser {
   direction: string;
   email: string;
   phone: string;
+  securityNumber: string;
+}
+export interface IPatient extends IPerson {
+  id?: number;
   securityNumber: string;
 }
 

@@ -1,4 +1,4 @@
-<div id="contenedor">
+<div  *ngIf="isLoading$ | async" id="contenedor">
   <div class="contenedor-loader">
     <div class="loader"></div>
   </div>

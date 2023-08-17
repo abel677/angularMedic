@@ -1,11 +1,13 @@
 import { IPerson, IUser } from ".";
 
-export interface IAuthResponse {
-    success: boolean;
+export interface IApiResponse {
+    status: boolean,
+    message: string
+}
+export interface IAuthResponse extends IApiResponse {
     user:    IUser;
     jwt:     string;
-    person:  IPerson;
+    person:  IPerson[];
 }
-
 
 

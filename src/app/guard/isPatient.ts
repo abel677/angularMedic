@@ -1,22 +1,23 @@
 import { CanActivateFn, Router } from '@angular/router';
 import { inject } from '@angular/core';
 import { AuthService } from '../services/auth.service';
+import { StoreService } from '../services/store.service';
 
 export const isPatient: CanActivateFn = (route, state) => {
 
   const router = inject(Router);
-  const authService = inject(AuthService);
+  const store = inject(StoreService);
   const page = route.url[0]?.path;
 
   
   
   if (page === 'appointments') {
     
-    if(authService.getPerson().success){
+    if(store.onIsPerson()){
 
       return true;
     }
-    alert('llenar los datos de contacto para poder continuar con la solicitud de citas')
+    alert('Para poder agendar una cita, primero llene los datos del contacto.')
     router.navigate(['/home']);
     return false
   }else{

@@ -4,6 +4,7 @@
 }
 ::-webkit-scrollbar {
   width: 7px;
+  background-color: #bdbdbd;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -14,7 +15,7 @@
 .borderCircle {
   width: 50px;
   height: 50px;
-  background-color: #050505;
+  background-color: #0167ff;
   color: white;
   text-align: center;
   align-items: center;
@@ -32,7 +33,9 @@
 .box {
   display: flex;
   flex-direction: column;
-  height: calc(100vh - 15px);
+  height: calc(100vh - 30px);
+  padding-bottom: 1rem;
+  margin-top: 1rem;
 }
 .box-center {
   display: flex;

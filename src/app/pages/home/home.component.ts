@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { IUser } from 'src/app/interfaces';
+import { IPerson, IUser } from 'src/app/interfaces';
 import { AuthService } from 'src/app/services/auth.service';
-import { LoaderService } from 'src/app/services/loader.service';
+import { PersonService } from 'src/app/services/person.service';
+import { StoreService } from 'src/app/services/store.service';
 
 @Component({
   selector: 'app-home',
@@ -14,35 +15,43 @@ export class HomeComponent implements OnInit {
     name: '',
     email: '',
   };
+  person: IPerson[] = [];
 
   constructor(
     private authService: AuthService,
-    private router: Router,
-    public loader: LoaderService
+    private personService: PersonService,
+    private store: StoreService,
+    private router: Router
   ) {}
   ngOnInit(): void {
     this.getUser();
+    this.getPerson();
   }
 
   getUser() {
-    this.loader.IsSetLoader = true;
-    if (this.authService.getUser().success) {
-      this.user = this.authService.getUser().user;
-      this.loader.IsSetLoader = false;
+    if (this.store.onIsUser()) {
+      this.user = this.store.getUser();
     }
+  }
+  getPerson() {
+    this.personService.getPersonIdUser(this.user.id || 0).subscribe({
+      next: (person) => {
+        this.person = person;
+        if (person.length > 0) {
+          localStorage.setItem('person', JSON.stringify(person[0]));
+        }
+      },
+    });
   }
 
   logout() {
-    this.loader.IsSetLoader = true;
     this.authService.logout().subscribe({
       next: (res) => {
         localStorage.clear();
         this.router.navigate(['/login']);
-        this.loader.IsSetLoader = false;
       },
       error: (err) => {
         console.log(err);
-        this.loader.IsSetLoader = false;
       },
     });
   }

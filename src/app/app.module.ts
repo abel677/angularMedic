@@ -16,6 +16,8 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NavbarComponent } from './components/navbar/navbar.component';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
+import { AlertComponent } from './components/alert/alert.component';
+import { PersonalContactComponent } from './pages/personal-contact/personal-contact.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +31,8 @@ import { TokenInterceptorService } from './interceptors/token-interceptor.servic
     AppointmentsComponent,
     LoaderComponent,
     NavbarComponent,
+    AlertComponent,
+    PersonalContactComponent,
   ],
   imports: [
     BrowserModule,

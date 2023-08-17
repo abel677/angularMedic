@@ -30,7 +30,6 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     private appointmentsService: AppointmentsService,
     private fb: FormBuilder,
     private router: Router,
-    private loader: LoaderService
   ) {}
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
@@ -59,28 +58,22 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   }
 
   getSpecialties(): void {
-    this.loader.IsSetLoader = true;
     this.specialtyService.getSpecialties().subscribe({
       next: (res) => {
         this.specialties = res;
-        this.loader.IsSetLoader = false;
       },
       error: (err) => {
         console.log(err);
-        this.loader.IsSetLoader = false;
       },
     });
   }
   getSchedules(): void {
-    this.loader.IsSetLoader = true;
     this.schedulesService.getSpecialties().subscribe({
       next: (res) => {
         this.schedules = res;
-        this.loader.IsSetLoader = false;
       },
       error: (err) => {
         console.log(err);
-        this.loader.IsSetLoader = false;
       },
     });
   }
@@ -98,7 +91,6 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
       alert('Faltan campos requeridos');
       return;
     }
-    this.loader.IsSetLoader = true;
     this.appointmentsService.postAppointments(this.form.value).subscribe({
       next: (res) => {
         alert(res.message);
@@ -106,27 +98,22 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
         this.doctors = [];
         this.doctorSelected = undefined;
         this.router.navigate(['/home']);
-        this.loader.IsSetLoader = false;
       },
       error: (err) => {
         console.log(err);
-        this.loader.IsSetLoader = false;
       },
     });
   }
 
   buscar(): void {
-    this.loader.IsSetLoader = true;
     this.doctorService
       .getDoctor(this.directionFilter, this.idSpecialties, this.idSchedule)
       .subscribe({
         next: (res) => {
           this.doctors = res;
-          this.loader.IsSetLoader = false;
         },
         error: (err) => {
           console.log(err);
-          this.loader.IsSetLoader = false;
         },
       });
   }
