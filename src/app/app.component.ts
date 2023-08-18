@@ -17,8 +17,8 @@ export class AppComponent {
 
   constructor(
     public alert: AlertService,
-    private loader: LoaderService,
-    private changeDetected: ChangeDetectorRef
+    private changeDetected: ChangeDetectorRef,
+    public loader: LoaderService
   ) {}
   ngAfterContentChecked() {
     this.changeDetected.detectChanges();
@@ -29,7 +29,7 @@ export class AppComponent {
       this.show = data;
       setTimeout(() => {
         this.alert.Close();
-      }, 6000);
+      }, 7000);
     });
     this.alert.getMessage().subscribe((message) => (this.message = message));
     this.alert.getColor().subscribe((color) => (this.color = color));

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
+import { IRoles } from 'src/app/interfaces/IAut';
 
 @Component({
   selector: 'my-header',
@@ -8,6 +9,7 @@ import { Router } from '@angular/router';
 })
 export class HeaderComponent {
   @Input() email: string = '';
+  @Input() role: IRoles[] = [];
   @Output() onClick: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   click() {

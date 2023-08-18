@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { IPageResponse } from 'src/app/interfaces/IPageResponse';
 
 @Component({
   selector: 'my-navbar',
@@ -7,4 +8,7 @@ import { Component } from '@angular/core';
 })
 export class NavbarComponent {
 
+  
+  @Input() pages:IPageResponse [] = []
+  
 }

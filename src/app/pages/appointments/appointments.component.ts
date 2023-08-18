@@ -6,15 +6,25 @@ import {
 } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ISchedules, ISpecialty } from 'src/app/interfaces';
+import {
+  IPatient,
+  IPerson,
+  ISchedules,
+  ISpecialty,
+  IUser,
+} from 'src/app/interfaces';
 import { IDoctor } from 'src/app/interfaces';
 import { AppointmentsService } from 'src/app/services/appointments.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { DoctorService } from 'src/app/services/doctor.service';
 import { GenderService } from 'src/app/services/gender.service';
 
 import { LoaderService } from 'src/app/services/loader.service';
+import { PatientService } from 'src/app/services/patient.service';
+import { PersonService } from 'src/app/services/person.service';
 import { SchedulesService } from 'src/app/services/schedules.service';
 import { SpecialtiesService } from 'src/app/services/specialties.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-appointments',
@@ -27,9 +37,12 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     private schedulesService: SchedulesService,
     private specialtyService: SpecialtiesService,
     private doctorService: DoctorService,
-    private appointmentsService: AppointmentsService,
     private fb: FormBuilder,
-    private router: Router,
+    private authService: AuthService,
+    private personService: PersonService,
+    private patientServices: PatientService,
+    private appointmentsService: AppointmentsService,
+    private router: Router
   ) {}
   ngAfterViewInit(): void {
     this.cdRef.detectChanges();
@@ -52,9 +65,42 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   doctors: IDoctor[] = [];
   doctorSelected?: IDoctor;
 
+  person?: IPerson;
+  user?: IUser;
+  patient?: IPatient;
+
   ngOnInit(): void {
     this.getSpecialties();
     this.getSchedules();
+    this.getUser();
+    this.getPerson();
+  }
+
+  getUser() {
+    this.user = this.authService.getUserStorage();
+  }
+
+  getPerson() {
+    this.personService.onPersonIdUser(this.user?.id || 0).subscribe({
+      next: (person) => {
+        this.person = person;
+        this.getPatient();
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  getPatient() {
+    this.patientServices.getPatientIdPerson(this.person?.id || 0).subscribe({
+      next: (patient) => {
+        this.patient = patient;
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 
   getSpecialties(): void {
@@ -88,12 +134,27 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
 
   onSubmit(): void {
     if (this.form.invalid) {
-      alert('Faltan campos requeridos');
+      Swal.fire({
+        position: 'center',
+        icon: 'error',
+        title: 'Completa todos los campos!',
+        showConfirmButton: false,
+        timer: 1500,
+      });
       return;
     }
+    console.log(this.form.value);
+
     this.appointmentsService.postAppointments(this.form.value).subscribe({
       next: (res) => {
-        alert(res.message);
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: res.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
         this.form.reset();
         this.doctors = [];
         this.doctorSelected = undefined;
@@ -124,6 +185,6 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
     console.log(this.doctorSelected);
 
     this.form.controls['doctor_id'].setValue(this.doctorSelected?.doctor_id);
-    this.form.controls['patient_id'].setValue(1);
+    this.form.controls['patient_id'].setValue(this.patient?.id);
   }
 }

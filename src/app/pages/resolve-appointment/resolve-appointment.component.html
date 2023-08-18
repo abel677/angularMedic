@@ -1,0 +1,58 @@
+<div class="row">
+  <div class="col-12">
+    <div *ngFor="let appointment of appointments" class="card mb-4">
+      <div class="card-body">
+        <div class="row">
+          <h4>Datos del Paciente</h4>
+        </div>
+        <div class="row m-0 p-3">
+          <div class="col-12 col-md-6 col-lg-4 my-1">
+            Nombres:
+            <strong
+              >{{ appointment.patient.name }}
+              {{ appointment.patient.lastName }}</strong
+            >
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 my-1">
+            <b>Dirección:</b> {{ appointment.patient.direction }}
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 my-1">
+            <b>Teléfono:</b> Teléfono: {{ appointment.patient.phone }}
+          </div>
+          <div class="col-12 col-md-6 col-lg-4 my-1">
+            <b>Tipo de Sangre:</b> {{ appointment.patient.typeBlood }}
+          </div>
+
+          <div class="col-12 col-md-6 col-lg-4 my-1">
+            <b>Estado de Solicitud:</b>
+            {{ appointment.state ? "RESUELTA" : "PENDIENTE" }}
+          </div>
+          <div class="col-12 my-1">
+            <b>Descripción de Cita:</b>
+            <textarea
+              class="form-control"
+              disabled
+              rows="2"
+              style="resize: none"
+              [value]="appointment.description"
+            ></textarea>
+          </div>
+        </div>
+        <div class="row d-flex flex-row align-items-center m-0 p-3">
+          <div class="col-12 col-md-6 my-1">
+            <b>Fecha Solicitud Cita:</b>
+            {{ appointment.appointmentDate }}
+          </div>
+          <div *ngIf="!appointment.state" class="col-12 col-md-6 my-1 text-end">
+            <button
+              class="btn btn-sm btn-primary"
+              (click)="resolveAppointment(appointment.id)"
+            >
+              Resolver Solicitud
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

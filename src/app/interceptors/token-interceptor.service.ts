@@ -26,27 +26,26 @@ export class TokenInterceptorService implements HttpInterceptor {
     req: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    this.loader.show();
-
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     const reqClone = req.clone({ headers });
 
-    return next.handle(reqClone)
-    .pipe(
-      map(res => {
-        console.log(res);
-        
-        return res
-     }),
+    this.loader.show();
+    return next.handle(reqClone).pipe(
       catchError((err) => {
-        this.alert.Show();
-        this.alert.setMessage(err.error.message);
-        this.alert.setColor('text-bg-danger');
+        if (err.status === 500) {
+          this.alert.Show();
+          this.alert.setMessage('No hay conexión con el servidor');
+          this.alert.setColor('text-bg-danger');  
+        }
         if ([401, 403, 404].indexOf(err.status) !== -1) {
+          this.alert.Show();
+          this.alert.setMessage(err.error.message);
+          this.alert.setColor('text-bg-danger');
           this.router.navigateByUrl('/login');
         }
-        return throwError(() => new Error(err));
+
+        return throwError(() => new Error(err.error.message));
       }),
       finalize(() => {
         this.loader.close();

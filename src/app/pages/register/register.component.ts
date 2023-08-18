@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { LoaderService } from 'src/app/services/loader.service';
 
@@ -12,7 +14,9 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private auth: AuthService,
-    private loader: LoaderService
+    private loader: LoaderService,
+    private alert: AlertService,
+    private router: Router
   ) {}
   isLoading$ = this.loader.isLoading$;
 
@@ -23,8 +27,6 @@ export class RegisterComponent implements OnInit {
   });
 
   isShowPassword: boolean = false;
-  message: string = '';
-  color: string = '';
 
   get nameField() {
     return this.form.get('name');
@@ -46,15 +48,19 @@ export class RegisterComponent implements OnInit {
     if (this.form.valid) {
       this.auth.register(this.form.value).subscribe({
         next: (res) => {
+          this.alert.Show();
+          this.alert.setMessage(res.message);
+          this.alert.setColor('text-bg-success');
           console.log(res);
-
-          this.message = res.message;
-          this.color = 'alert-success';
           this.form.reset();
+          this.router.navigateByUrl('/login');
         },
         error: (err) => {
-          this.message = err;
-          this.color = 'alert-warning';
+          this.alert.Show();
+          this.alert.setMessage(err.message);
+          this.alert.setColor('text-bg-danger');
+          console.log(err);
+          
         },
       });
     } else {

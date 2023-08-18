@@ -18,6 +18,7 @@ import { NavbarComponent } from './components/navbar/navbar.component';
 import { TokenInterceptorService } from './interceptors/token-interceptor.service';
 import { AlertComponent } from './components/alert/alert.component';
 import { PersonalContactComponent } from './pages/personal-contact/personal-contact.component';
+import { ResolveAppointmentComponent } from './pages/resolve-appointment/resolve-appointment.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import { PersonalContactComponent } from './pages/personal-contact/personal-cont
     NavbarComponent,
     AlertComponent,
     PersonalContactComponent,
+    ResolveAppointmentComponent,
   ],
   imports: [
     BrowserModule,

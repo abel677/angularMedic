@@ -11,8 +11,8 @@ import { Observable } from 'rxjs';
 export class PatientService {
   constructor(private http: HttpClient) {}
 
-  getPatientIdPerson(id: number): Observable<IPatient[]> {
-    return this.http.get<IPatient[]>(
+  getPatientIdPerson(id: number): Observable<IPatient> {
+    return this.http.get<IPatient>(
       `${environment.apiUrl}/patient/${id}`
     );
   }

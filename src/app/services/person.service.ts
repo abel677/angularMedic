@@ -24,7 +24,11 @@ export class PersonService {
     );
   }
 
-  getPersonIdUser(id: number): Observable<IPatient[]> {
-    return this.http.get<IPatient[]>(`${environment.apiUrl}/persons/${id}`);
+  getPersonIdUser(id: number): Observable<IPatient> {
+    return this.http.get<IPatient>(`${environment.apiUrl}/persons/${id}`);
+  }
+
+  onPersonIdUser(id: number): Observable<IPerson> {
+    return this.http.get<IPerson>(`${environment.apiUrl}/persons/${id}`);
   }
 }

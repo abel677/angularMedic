@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
 import { IPatient, IPerson, IUser } from 'src/app/interfaces';
+import { IRoles } from 'src/app/interfaces/IAut';
 import { AppointmentResponse } from 'src/app/interfaces/response';
 import { AppointmentsService } from 'src/app/services/appointments.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { DoctorService } from 'src/app/services/doctor.service';
 import { LoaderService } from 'src/app/services/loader.service';
 import { PatientService } from 'src/app/services/patient.service';
 import { PersonService } from 'src/app/services/person.service';
-import { StoreService } from 'src/app/services/store.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,29 +19,40 @@ export class DashboardComponent {
     private appointmentsService: AppointmentsService,
     private patientServices: PatientService,
     private personService: PersonService,
-    private store: StoreService,
+    private authService: AuthService,
+    private doctorService: DoctorService
   ) {}
 
   appointments: AppointmentResponse[] = [];
 
   user?: IUser;
-  person: IPerson[] = [];
-  patient: IPatient[] = [];
+  person?: IPerson;
+  patient?: IPatient;
+  roles: IRoles[] = [];
 
   ngOnInit(): void {
+    this.getRoles();
     this.getUser();
     this.getPerson();
   }
 
+  getRoles() {
+    this.roles = this.authService.getRoles();
+  }
+
   getUser() {
-    this.user = this.store.getUser();
+    this.user = this.authService.getUserStorage();
   }
 
   getPerson() {
-    this.personService.getPersonIdUser(this.user?.id || 0).subscribe({
+    this.personService.onPersonIdUser(this.user?.id || 0).subscribe({
       next: (person) => {
         this.person = person;
-        this.getPatient();
+        if (this.roles[0].role === 'patient') {
+          this.getPatient();
+        } else {
+          this.getDoctor();
+        }
       },
       error: (err) => {
         console.log(err);
@@ -49,8 +61,8 @@ export class DashboardComponent {
   }
 
   getPatient() {
-    this.patientServices.getPatientIdPerson(this.person[0]?.id || 0).subscribe({
-      next: (patient) => {
+    this.patientServices.getPatientIdPerson(this.person?.id || 0).subscribe({
+      next: (patient) => {        
         this.patient = patient;
         this.getAppointments();
       },
@@ -60,16 +72,48 @@ export class DashboardComponent {
     });
   }
 
+
   getAppointments(): void {
-    this.appointmentsService
-      .getAppointments(this.patient[0]?.id || 0)
-      .subscribe({
-        next: (res) => {
-          this.appointments = res;
-        },
-        error: (err) => {
-          console.log(err);
-        },
-      });
+    if (this.roles[0].role === 'patient') {
+      this.appointmentsService
+        .getAppointments(this.patient?.id || 0)
+        .subscribe({
+          next: (res) => {
+            this.appointments = res;
+          },
+          error: (err) => {
+            console.log(err);
+          },
+        });
+    } else {
+      console.log('debe consultar las solicitudes de los pacientes');
+    }
+  }
+
+  getDoctor() {
+    this.doctorService.getDoctorIdPerson(this.person?.id || 0).subscribe({
+      next: (res) => {
+        console.log(res);
+
+        this.getAppointmentPatient(res.id || 0);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
+  }
+
+  getAppointmentPatient(idDoctor: number) {
+    console.log(idDoctor);
+    
+    this.doctorService.getAppointmentPatient(idDoctor).subscribe({
+      next: (res) => {
+        this.appointments = res;
+        console.log(res);
+      },
+      error: (err) => {
+        console.log(err);
+      },
+    });
   }
 }
