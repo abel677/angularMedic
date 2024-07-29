@@ -10,6 +10,7 @@ import { isLogout } from './guard/isLogout';
 import { isPatient } from './guard/isPatient';
 import { PersonalContactComponent } from './pages/personal-contact/personal-contact.component';
 import { ResolveAppointmentComponent } from './pages/resolve-appointment/resolve-appointment.component';
+import { isConfirmAccount } from './guard/isConfirmAccount';
 
 const routes: Routes = [
   { path: '', component: LoginComponent, canActivate: [isLogout] },
@@ -17,20 +18,33 @@ const routes: Routes = [
   { path: 'register', component: RegisterComponent },
 
   {
-    path: 'home', component: HomeComponent, canActivate: [isExpired],
-    
+    path: 'home',
+    component: HomeComponent,
+    canActivate: [isExpired, isConfirmAccount],
+
     children: [
-      { path: '', component: DashboardComponent, canActivate: [isExpired]},
-      { path: 'appointments', component: AppointmentsComponent, canActivate:[ isExpired, isPatient ]},
-      { path: 'personal/contact', component: PersonalContactComponent, canActivate:[ isExpired ]},
-      { path: 'resolved/appointments', component: ResolveAppointmentComponent, canActivate:[ isExpired ]},
-      
-    ]
+      { path: '', component: DashboardComponent, canActivate: [isExpired, isConfirmAccount] },
+      {
+        path: 'appointments',
+        component: AppointmentsComponent,
+        canActivate: [isExpired, isConfirmAccount, isPatient],
+      },
+      {
+        path: 'personal/contact',
+        component: PersonalContactComponent,
+        canActivate: [isExpired, isConfirmAccount],
+      },
+      {
+        path: 'resolved/appointments',
+        component: ResolveAppointmentComponent,
+        canActivate: [isExpired, isConfirmAccount],
+      },
+    ],
   },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

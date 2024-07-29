@@ -44,8 +44,9 @@ export class LoginComponent {
           localStorage.setItem('token', res.jwt);
           localStorage.setItem('user', JSON.stringify(res.user));
           localStorage.setItem('roles', JSON.stringify(res.roles));
-          this.router.navigate(['/home']);
+
           this.loader = false;
+          this.router.navigate(['/home']);
         },
         error: (err) => {
           this.loader = false;

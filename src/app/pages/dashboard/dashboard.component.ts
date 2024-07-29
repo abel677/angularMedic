@@ -62,7 +62,7 @@ export class DashboardComponent {
 
   getPatient() {
     this.patientServices.getPatientIdPerson(this.person?.id || 0).subscribe({
-      next: (patient) => {        
+      next: (patient) => {
         this.patient = patient;
         this.getAppointments();
       },
@@ -71,7 +71,6 @@ export class DashboardComponent {
       },
     });
   }
-
 
   getAppointments(): void {
     if (this.roles[0].role === 'patient') {
@@ -105,7 +104,7 @@ export class DashboardComponent {
 
   getAppointmentPatient(idDoctor: number) {
     console.log(idDoctor);
-    
+
     this.doctorService.getAppointmentPatient(idDoctor).subscribe({
       next: (res) => {
         this.appointments = res;

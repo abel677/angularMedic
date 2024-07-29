@@ -59,7 +59,11 @@
       <tbody>
         <tr *ngFor="let item of appointments; index as i">
           <td>
-            <a routerLink="/home/resolved/appointments" *ngIf="!item.state" class="btn btn-sm btn-primary">
+            <a
+              routerLink="/home/resolved/appointments"
+              *ngIf="!item.state"
+              class="btn btn-sm btn-primary"
+            >
               ver solicitud
             </a>
           </td>

@@ -1,8 +1,7 @@
 <div class="box-flex">
   <div class="d-flex justify-content-center align-items-center h-100">
-    <div class="col-12 col-md-4 col-lg-3 py-3 px-5">
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" novalidate>
-
+    <div class="col-12 col-md-6 col-lg-5 col-xl-4 py-3 px-5">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="on">
         <div class="row mb-2">
           <div class="col-12">
             <label class="form-label">Email:</label>
@@ -97,7 +96,10 @@
 
         <div class="row mb-2">
           <div class="col-12 text-center">
-            <a routerLink="/register" class="btn btn-sm btn-secondary fst-italic">
+            <a
+              routerLink="/register"
+              class="btn btn-sm btn-secondary fst-italic"
+            >
               Crear cuenta
             </a>
           </div>
