@@ -1,9 +1,17 @@
-import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router } from '@angular/router';
+import { Modal } from 'bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
-import { LoaderService } from 'src/app/services/loader.service';
 import { PersonService } from 'src/app/services/person.service';
+import Swal from 'sweetalert2';
+
+declare let bootstrap: any;
 
 @Component({
   selector: 'app-login',
@@ -11,6 +19,9 @@ import { PersonService } from 'src/app/services/person.service';
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent {
+  @ViewChild('modal') modal?: ElementRef<HTMLElement>;
+  autService = inject(AuthService);
+
   isShowPassword: boolean = false;
   loader: boolean = false;
   constructor(
@@ -20,10 +31,51 @@ export class LoginComponent {
     public personService: PersonService
   ) {}
 
+  #modal?: Modal;
+  formChangePassword: FormGroup = new FormGroup({
+    email: new FormControl('', [
+      Validators.required,
+      Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'),
+    ]),
+  });
+
   form: FormGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(8)]],
   });
+
+  initModal(): void {
+    this.#modal = new bootstrap.Modal(this.modal?.nativeElement);
+    this.#modal?.show();
+  }
+
+  closeModal(): void {
+    this.#modal?.hide();
+  }
+
+  onSubmitChangePassword(): void {
+    if (this.formChangePassword.invalid) {
+      this.formChangePassword.markAllAsTouched();
+      return;
+    }
+    this.autService.changePassword(this.formChangePassword.value).subscribe({
+      next: (res) => {
+        this.#modal?.hide();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Exito!',
+          text: res.message,
+          showConfirmButton: false,
+          timer: 3600,
+        });
+      },
+    });
+  }
+
+  getControl(name: string): FormControl {
+    return this.formChangePassword.get(name) as FormControl;
+  }
 
   get emailField() {
     return this.form.get('email');

@@ -1,12 +1,5 @@
 <div class="px-3 container-contact">
   <form [formGroup]="form" (ngSubmit)="onSubmit()">
-    <div class="row justify-content-end">
-      <div class="col-auto">
-        <div class="content-icon" (click)="initModal()">
-          <i class="bi bi-gear fs-5"></i>
-        </div>
-      </div>
-    </div>
     <div class="row">
       <div
         class="col-12 col-md-4 d-flex align-items-center justify-content-center"
@@ -106,82 +99,4 @@
       </div>
     </div>
   </form>
-
-  <div class="modal fade" id="staticBackdrop" #modal>
-    <div class="modal-dialog modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="staticBackdropLabel">
-            Cambio de contraseña
-          </h1>
-          <button
-            type="button"
-            class="btn-close"
-            (click)="closeModal()"
-          ></button>
-        </div>
-        <div class="modal-body">
-          <form [formGroup]="formChangePassword">
-            <div class="row">
-              <div class="col-12 mb-1">
-                <label class="form-label" for="email">Correo electronico</label>
-                <input
-                  id="email"
-                  type="email"
-                  class="form-control form-control-sm"
-                  formControlName="email"
-                />
-                <p
-                  *ngIf="
-                    getControl('email').errors && getControl('email').touched
-                  "
-                  class="text-danger"
-                >
-                  Ingrese un correo válido
-                </p>
-              </div>
-              <div class="col-12">
-                <label class="form-label" for="password"
-                  >Nueva contraseña</label
-                >
-                <input
-                  id="password"
-                  type="password"
-                  class="form-control form-control-sm"
-                  formControlName="password"
-                />
-                <p
-                  *ngIf="
-                    getControl('password').errors &&
-                    getControl('password').touched
-                  "
-                  class="text-danger"
-                >
-                  Ingrese una contraseña
-                </p>
-              </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Cancelar
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary"
-            (click)="onSubmitChangePassword()"
-          >
-            Guardar
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
 </div>
-
-<!-- modal para cambiar contraseña -->

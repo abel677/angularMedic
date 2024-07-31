@@ -1,17 +1,5 @@
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-  inject,
-} from '@angular/core';
-import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
-import { Modal } from 'bootstrap';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { IGender, IPatient, IPerson, IUser } from 'src/app/interfaces';
 import { AlertService } from 'src/app/services/alert.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -20,14 +8,12 @@ import { PatientService } from 'src/app/services/patient.service';
 import { PersonService } from 'src/app/services/person.service';
 import Swal from 'sweetalert2';
 
-declare let bootstrap: any;
 @Component({
   selector: 'app-personal-contact',
   templateUrl: './personal-contact.component.html',
   styleUrls: ['./personal-contact.component.css'],
 })
 export class PersonalContactComponent implements OnInit {
-  @ViewChild('modal') modal?: ElementRef<HTMLElement>;
   autService = inject(AuthService);
   genderService = inject(GenderService);
   personService = inject(PersonService);
@@ -36,14 +22,6 @@ export class PersonalContactComponent implements OnInit {
   fb = inject(FormBuilder);
   genders: IGender[] = [];
   isEdit: boolean = false;
-
-  formChangePassword: FormGroup = new FormGroup({
-    email: new FormControl('', [
-      Validators.required,
-      Validators.pattern('^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$'),
-    ]),
-    password: new FormControl('', Validators.required),
-  });
 
   form: FormGroup = this.fb.group({
     id: [''],
@@ -62,39 +40,6 @@ export class PersonalContactComponent implements OnInit {
   person?: IPerson;
   user?: IUser;
   patient?: IPatient;
-  #modal?: Modal;
-
-  onSubmitChangePassword(): void {
-    if (this.formChangePassword.invalid) {
-      this.formChangePassword.markAllAsTouched();
-      return;
-    }
-    this.autService.changePassword(this.formChangePassword.value).subscribe({
-      next: (res) => {
-        this.#modal?.hide()
-        Swal.fire({
-          position: 'top-end',
-          icon: 'success',
-          title: res.message,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      },
-    });
-  }
-
-  getControl(name: string): FormControl {
-    return this.formChangePassword.get(name) as FormControl;
-  }
-
-  initModal(): void {
-    this.#modal = new bootstrap.Modal(this.modal?.nativeElement);
-    this.#modal?.show();
-  }
-
-  closeModal(): void {
-    this.#modal?.hide();
-  }
 
   ngOnInit(): void {
     this.getUser();

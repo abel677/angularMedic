@@ -25,14 +25,13 @@ export class AuthService {
 
   changePassword({
     email,
-    password,
   }: {
     email: string;
     password: string;
   }): Observable<IApiResponse> {
     return this.http.post<IApiResponse>(
       `${environment.apiUrl}/changePassword`,
-      { email, password }
+      { email }
     );
   }
 

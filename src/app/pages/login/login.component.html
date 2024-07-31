@@ -1,12 +1,12 @@
 <div class="box-flex">
   <div class="d-flex justify-content-center align-items-center h-100">
     <div class="col-12 col-md-6 col-lg-5 col-xl-4 py-3 px-5">
-      <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="on">
+      <form [formGroup]="form" (ngSubmit)="onSubmit()" autocomplete="on" validate>
         <div class="row mb-2">
           <div class="col-12">
             <label class="form-label">Email:</label>
             <input
-              type="text"
+              type="email"
               [ngClass]="
                 emailField?.errors && emailField?.touched
                   ? 'is-invalid form-control'
@@ -68,6 +68,14 @@
           </div>
         </div>
 
+        <div class="row justify-content-end my-4">
+          <div class="col-auto">
+            <a (click)="initModal()" class="custom-link"
+              >¿Olvidaste tu Contraseña?</a
+            >
+          </div>
+        </div>
+
         <div class="row mb-4">
           <div class="col-12">
             <ng-template [ngIf]="!loader" [ngIfElse]="loaderButton">
@@ -105,6 +113,54 @@
           </div>
         </div>
       </form>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="staticBackdrop" #modal>
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+          Recuperar contraseña
+        </h1>
+        <button type="button" class="btn-close" (click)="closeModal()"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="formChangePassword">
+          <div class="row">
+            <div class="col-12 mb-1">
+              <label class="form-label" for="email">Correo electronico</label>
+              <input
+                id="email"
+                type="email"
+                class="form-control form-control-sm"
+                formControlName="email"
+              />
+              <p
+                *ngIf="
+                  getControl('email').errors && getControl('email').touched
+                "
+                class="text-danger"
+              >
+                Ingrese un correo válido
+              </p>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Cancelar
+        </button>
+        <button
+          type="button"
+          class="btn btn-primary"
+          (click)="onSubmitChangePassword()"
+        >
+          Guardar
+        </button>
+      </div>
     </div>
   </div>
 </div>

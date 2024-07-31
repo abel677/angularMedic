@@ -1,3 +1,14 @@
 .fs-1 {
   font-size: 6rem !important;
 }
+
+a.custom-link {
+
+  color: #007bff;
+  font-weight: bold;
+  padding: 5px 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s, color 0.3s;
+  cursor: pointer;
+}
+
