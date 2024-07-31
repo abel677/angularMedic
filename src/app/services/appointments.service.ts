@@ -30,4 +30,10 @@ export class AppointmentsService {
       `${environment.apiUrl}/resolveAppointment/${id}`
     );
   }
+
+  cancelAppointment(appointmentId: number): Observable<IApiResponse> {
+    return this.http.delete<IApiResponse>(
+      `${environment.apiUrl}/cancelAppointment/${appointmentId}`
+    );
+  }
 }

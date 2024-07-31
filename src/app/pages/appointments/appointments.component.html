@@ -86,8 +86,7 @@
         <div class="tableFixHead">
           <table class="table table-hover table-striped w-100">
             <thead>
-              <th>Nombres</th>
-              <th>Apellidos</th>
+              <th>Doctor</th>
               <th>Email</th>
               <th>Especialidad</th>
               <th>Horario de Atención</th>
@@ -95,8 +94,8 @@
             </thead>
             <tbody>
               <tr *ngFor="let item of doctors" (click)="isSelected.click()">
-                <td>{{ item.name }}</td>
-                <td>{{ item.lastName }}</td>
+                <td>{{ item.name }} {{ item.lastName }}</td>
+  
                 <td>{{ item.email }}</td>
                 <td>{{ item.specialty }}</td>
                 <td>{{ item.schedule }}</td>

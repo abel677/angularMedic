@@ -13,6 +13,7 @@
   <div class="tableFixHead">
     <table class="table table-hover table-striped w-100">
       <thead>
+        <th>Acciones</th>
         <th>Doctor</th>
         <th>Fecha Solicitud</th>
         <th>Fecha Cita</th>
@@ -21,6 +22,14 @@
       </thead>
       <tbody>
         <tr *ngFor="let item of appointments; index as i">
+          <td>
+            <button
+              (click)="onCancelAppointment(item.idAppointment)"
+              class="btn btn-primary"
+            >
+              Cancelar
+            </button>
+          </td>
           <td>
             {{ item.doctor.name }}
           </td>

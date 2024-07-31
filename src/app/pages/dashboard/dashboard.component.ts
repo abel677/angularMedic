@@ -1,13 +1,13 @@
 import { Component } from '@angular/core';
 import { IPatient, IPerson, IUser } from 'src/app/interfaces';
-import { IRoles } from 'src/app/interfaces/IAut';
+import { IApiResponse, IRoles } from 'src/app/interfaces/IAut';
 import { AppointmentResponse } from 'src/app/interfaces/response';
 import { AppointmentsService } from 'src/app/services/appointments.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { DoctorService } from 'src/app/services/doctor.service';
-import { LoaderService } from 'src/app/services/loader.service';
 import { PatientService } from 'src/app/services/patient.service';
 import { PersonService } from 'src/app/services/person.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-dashboard',
@@ -36,6 +36,32 @@ export class DashboardComponent {
     this.getPerson();
   }
 
+  onCancelAppointment(idAppointment: number): void {
+    Swal.fire({
+      position: 'center',
+      icon: 'error',
+      title: `¿Está seguro de cancelar la esta cita?`,
+      showConfirmButton: true,
+      showCancelButton: true,
+    }).then((r) => {
+      if (r.isConfirmed) {
+        this.appointmentsService.cancelAppointment(idAppointment).subscribe({
+          next: (res: IApiResponse) => {
+            Swal.fire({
+              position: 'center',
+              icon: 'error',
+              title: res.message,
+              showConfirmButton: true,
+              timer: 1500,
+            });
+
+            this.getAppointments();
+          },
+        });
+      }
+    });
+  }
+
   getRoles() {
     this.roles = this.authService.getRoles();
   }
@@ -44,6 +70,7 @@ export class DashboardComponent {
     this.user = this.authService.getUserStorage();
   }
 
+  isPatient: boolean = false;
   getPerson() {
     this.personService.onPersonIdUser(this.user?.id || 0).subscribe({
       next: (person) => {
@@ -84,16 +111,12 @@ export class DashboardComponent {
             console.log(err);
           },
         });
-    } else {
-      console.log('debe consultar las solicitudes de los pacientes');
     }
   }
 
   getDoctor() {
     this.doctorService.getDoctorIdPerson(this.person?.id || 0).subscribe({
       next: (res) => {
-        console.log(res);
-
         this.getAppointmentPatient(res.id || 0);
       },
       error: (err) => {
@@ -108,7 +131,6 @@ export class DashboardComponent {
     this.doctorService.getAppointmentPatient(idDoctor).subscribe({
       next: (res) => {
         this.appointments = res;
-        console.log(res);
       },
       error: (err) => {
         console.log(err);

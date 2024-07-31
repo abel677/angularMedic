@@ -1,0 +1,15 @@
+.content-icon {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.content-icon:hover {
+    background: rgba(39, 39, 39, 0.103);
+    cursor: pointer;
+
+}
+

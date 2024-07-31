@@ -69,13 +69,6 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
   user?: IUser;
   patient?: IPatient;
 
-  ngOnInit(): void {
-    this.getSpecialties();
-    this.getSchedules();
-    this.getUser();
-    this.getPerson();
-  }
-
   getUser() {
     this.user = this.authService.getUserStorage();
   }
@@ -181,10 +174,15 @@ export class AppointmentsComponent implements OnInit, AfterViewInit {
 
   selectDoctor(doctor: IDoctor): void {
     this.doctorSelected = doctor;
-
-    console.log(this.doctorSelected);
-
     this.form.controls['doctor_id'].setValue(this.doctorSelected?.doctor_id);
     this.form.controls['patient_id'].setValue(this.patient?.id);
+  }
+
+  ngOnInit(): void {
+    this.getSpecialties();
+    this.getSchedules();
+    this.getUser();
+    this.getPerson();
+    this.buscar()
   }
 }

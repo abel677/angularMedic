@@ -23,6 +23,19 @@ export class AuthService {
 
   constructor(private http: HttpClient, private personService: PersonService) {}
 
+  changePassword({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }): Observable<IApiResponse> {
+    return this.http.post<IApiResponse>(
+      `${environment.apiUrl}/changePassword`,
+      { email, password }
+    );
+  }
+
   register(payload: IRegisterPayload): Observable<IApiResponse> {
     return this.http.post<IApiResponse>(
       `${environment.apiUrl}/register`,

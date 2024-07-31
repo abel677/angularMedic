@@ -61,7 +61,7 @@ export class ResolveAppointmentComponent {
   getAppointmentPatient(idDoctor: number) {
     this.doctorService.getAppointmentPatient(idDoctor).subscribe({
       next: (res) => {
-        this.appointments = res;
+        this.appointments = res.filter((x) => !x.state);
         console.log(res);
       },
       error: (err) => {

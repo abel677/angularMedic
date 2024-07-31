@@ -6,6 +6,7 @@ export interface AppointmentResponse {
   description: string;
   state: number;
   doctor: Doctor;
+  idAppointment: number;
 }
 
 export interface Doctor {
